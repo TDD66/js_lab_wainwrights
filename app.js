@@ -1,7 +1,9 @@
 const wainwrightsList = document.getElementById("wainwrights-list");
-const form = document.getElementById("search-form")
+const form = document.getElementById("search-form");
+const loadingHeader = document.getElementById("loading-header")
 
 const getAllWainwrights = async (filter) => {
+    loadingHeader.innerText = "";
     const response = await fetch("https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/wainwrights_data/wainwrights.json");
     const wainwrights = await response.json();
     
@@ -25,16 +27,19 @@ const createWainwrightContainer = (wainwright) => {
     const wainwrightListItem = document.createElement("li");
 
     const wainwrightName = document.createElement("h1");
-    wainwrightName.innerText = wainwright["name"];
+    wainwrightName.innerText = wainwright.name;
 
     const wainwrightHeight = document.createElement("p");
-    wainwrightHeight.innerText = `Height (m): ${wainwright["heightMetres"]}`;
+    wainwrightHeight.innerText = `Height (m): ${wainwright.heightMetres}`;
 
     const wainwrightArea = document.createElement("ul");
 
-    for(const key in wainwright["area"]){
+    for(const [key, value] of Object.entries(wainwright.area)){
+        if(key === "id"){
+            continue;
+        }
         const subListItem = document.createElement("li");
-        subListItem.innerText = `${key} : ${wainwright["area"][key]}`;
+        subListItem.innerText = `${key} : ${value}`;
         wainwrightArea.appendChild(subListItem);
     }
 
@@ -44,10 +49,17 @@ const createWainwrightContainer = (wainwright) => {
     return wainwrightListItem;
 }
 
+const loadingScreen = () => {
+    setTimeout(() => {
+        loadingHeader.innerText = "Awaiting API...";
+    }, 2000);
+}
+
 form.addEventListener("submit", (event) => {
     event.preventDefault();
-    const filter = event.target["query"].value;
     wainwrightsList.innerText = "";
+    const filter = event.target["query"].value;
+    loadingHeader.innerText = "Awaiting API...";
     setTimeout(() => {
         getAllWainwrights(filter);
     }, 2000)
