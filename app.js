@@ -1,19 +1,25 @@
 const wainwrightsList = document.getElementById("wainwrights-list");
+const form = document.getElementById("search-form")
 
 const getAllWainwrights = async (filter) => {
     const response = await fetch("https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/wainwrights_data/wainwrights.json");
     const wainwrights = await response.json();
     
-    wainwrights.forEach(wainwright => {
-        const listItem = createWainwrightContainer(wainwright);
-        wainwrightsList.appendChild(listItem);
-    })
+    if(filter != null){
+        wainwrights.forEach(wainwright => {
+            if(wainwright["name"].toLowerCase().includes(filter.toLowerCase())){
+                const listItem = createWainwrightContainer(wainwright);
+                wainwrightsList.appendChild(listItem);
+            }
+        });
+    }
+    else{
+        wainwrights.forEach(wainwright => {
+            const listItem = createWainwrightContainer(wainwright);
+            wainwrightsList.appendChild(listItem);
+        });
+    }
 }
-
-const main = async () => {
-    getAllWainwrights();
-}
-main();
 
 const createWainwrightContainer = (wainwright) => {
     const wainwrightListItem = document.createElement("li");
@@ -37,3 +43,14 @@ const createWainwrightContainer = (wainwright) => {
     wainwrightListItem.appendChild(wainwrightArea);
     return wainwrightListItem;
 }
+
+form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const filter = event.target["query"].value;
+    wainwrightsList.innerText = "";
+    setTimeout(() => {
+        getAllWainwrights(filter);
+    }, 2000)
+})
+
+getAllWainwrights();
