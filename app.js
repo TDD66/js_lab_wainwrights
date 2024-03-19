@@ -9,7 +9,7 @@ const getAllWainwrights = async (filter) => {
     
     if(filter != null){
         wainwrights.forEach(wainwright => {
-            if(wainwright["name"].toLowerCase().includes(filter.toLowerCase())){
+            if(wainwright.name.toLowerCase().includes(filter.toLowerCase())){
                 const listItem = createWainwrightContainer(wainwright);
                 wainwrightsList.appendChild(listItem);
             }
