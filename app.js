@@ -49,11 +49,6 @@ const createWainwrightContainer = (wainwright) => {
     return wainwrightListItem;
 }
 
-const loadingScreen = () => {
-    setTimeout(() => {
-        loadingHeader.innerText = "Awaiting API...";
-    }, 2000);
-}
 
 form.addEventListener("submit", (event) => {
     event.preventDefault();
