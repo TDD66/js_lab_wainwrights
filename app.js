@@ -2,7 +2,7 @@ const wainwrightsList = document.getElementById("wainwrights-list");
 const form = document.getElementById("search-form");
 const loadingHeader = document.getElementById("loading-header")
 
-const getAllWainwrights = async (filter) => {
+const getWainwrights = async (filter) => {
     loadingHeader.innerText = "";
     const response = await fetch("https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/wainwrights_data/wainwrights.json");
     const wainwrights = await response.json();
@@ -61,8 +61,8 @@ form.addEventListener("submit", (event) => {
     const filter = event.target["query"].value;
     loadingHeader.innerText = "Awaiting API...";
     setTimeout(() => {
-        getAllWainwrights(filter);
+        getWainwrights(filter);
     }, 2000)
 })
 
-getAllWainwrights();
+getWainwrights();
